@@ -3,7 +3,8 @@ const booksRouter = require('./routes/booksRoutes')
 
 const app = express()
 
-
+// JSON body Parser
+app.use(express.json())
 
 
 
