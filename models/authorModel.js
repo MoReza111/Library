@@ -12,10 +12,10 @@ const auhtorSchema = mongoose.Schema({
     dateOfBirth: Date,
     book: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'Book'
+        ref: 'Books'
     }]
 })
 
-const auhtorModel = mongoose.Model('Author', auhtorSchema)
+const auhtorModel = mongoose.model('Authors', auhtorSchema)
 
 module.exports = auhtorModel
