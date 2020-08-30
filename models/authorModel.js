@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const auhtorSchema = mongoose.Schema({
+const auhtorSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: [true, 'An Author must have a First name']
@@ -10,12 +10,12 @@ const auhtorSchema = mongoose.Schema({
         required: [true, 'An Author must have a Last name']
     },
     dateOfBirth: Date,
-    book: [{
+    books: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'Books'
+        ref: 'Book'
     }]
 })
 
-const auhtorModel = mongoose.model('Authors', auhtorSchema)
+const Auhtor = mongoose.model('Author', auhtorSchema)
 
-module.exports = auhtorModel
+module.exports = Auhtor

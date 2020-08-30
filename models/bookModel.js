@@ -9,9 +9,9 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: [true, 'A book must have a description']
     },
-    authors: {
+    author: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Authors'
+        ref: 'Author'
     },
     dateOfPublish: Date,
     genres: [{
@@ -19,6 +19,6 @@ const bookSchema = new mongoose.Schema({
     }]
 })
 
-const bookModel = mongoose.model('Books', bookSchema)
+const Book = mongoose.model('Book', bookSchema)
 
-module.exports = bookModel
+module.exports = Book
