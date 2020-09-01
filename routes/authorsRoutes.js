@@ -1,17 +1,8 @@
 const express = require('express')
-const Author = require('./../models/authorModel')
+const authorController = require('../controllers/authorsController')
 
 const router = express.Router()
 
-router.route('/').get(async (req, res) => {
-    const authors = await Author.find().populate('books', select = "title -_id")
-    res.status(200).json({
-        status: 'success',
-        number: authors.length,
-        data: {
-            authors
-        }
-    })
-})
+router.route('/').get(authorController.getAuthors)
 
 module.exports = router
