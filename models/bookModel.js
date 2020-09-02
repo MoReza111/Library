@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Author = require('./authorModel')
 
 const bookSchema = new mongoose.Schema({
     title: {
@@ -17,6 +18,12 @@ const bookSchema = new mongoose.Schema({
     genres: [{
         type: String
     }]
+})
+
+bookSchema.pre('save', async function (next) {
+    console.log(this)
+    await Author.findByIdAndUpdate(this.author, { $push: { books: this._id } })
+    next()
 })
 
 const Book = mongoose.model('Book', bookSchema)

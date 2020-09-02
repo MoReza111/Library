@@ -31,3 +31,16 @@ exports.getAuthor = catchAsync(async (req, res, next) => {
         }
     })
 })
+exports.createAuthor = catchAsync(async (req, res, next) => {
+    const author = await Author.create({
+        firstName: req.body.FirstName,
+        lastName: req.body.LastName,
+        dateOfBirth: new Date(req.body.DateOfBirth)
+    })
+    res.status(200).json({
+        status: 'success',
+        data: {
+            author
+        }
+    })
+})
