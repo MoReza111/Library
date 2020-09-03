@@ -21,8 +21,12 @@ const bookSchema = new mongoose.Schema({
 })
 
 bookSchema.pre('save', async function (next) {
-    console.log(this)
     await Author.findByIdAndUpdate(this.author, { $push: { books: this._id } })
+    next()
+})
+
+bookSchema.pre('findOneAndDelete', async function (next) {
+    await Author.findOneAndUpdate({ books: { $in: this._conditions._id } }, { $pull: { books: this._conditions._id } })
     next()
 })
 

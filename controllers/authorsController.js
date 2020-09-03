@@ -6,10 +6,6 @@ const AppError = require('./../Utils/appError')
 exports.getAuthors = catchAsync(async (req, res, next) => {
     const authors = await Author.find().populate('books', select = "title -_id")
 
-    if (!authors) {
-        return next(new AppError('Not Found', 404))
-    }
-
     res.status(200).json({
         status: 'success',
         number: authors.length,
@@ -37,10 +33,24 @@ exports.createAuthor = catchAsync(async (req, res, next) => {
         lastName: req.body.LastName,
         dateOfBirth: new Date(req.body.DateOfBirth)
     })
-    res.status(200).json({
+    res.status(201).json({
         status: 'success',
         data: {
             author
+        }
+    })
+})
+exports.updateAuthor = catchAsync(async (req, res, next) => {
+    const updatedAuthor = await Author.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+
+    if (!updatedAuthor) {
+        return next(new AppError('There\'s No author with that ID', 404))
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            updatedAuthor
         }
     })
 })
