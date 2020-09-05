@@ -2,9 +2,15 @@ const Authors = require('./../models/authorModel')
 const Book = require('./../models/bookModel')
 const catchAsync = require('./../Utils/catchAsync')
 const AppError = require('./../Utils/appError')
+const ApiFeatures = require('./../Utils/apiFeatures')
 
 exports.getBooks = catchAsync(async (req, res, next) => {
-    const books = await Book.find().populate('author', select = '-books -dateOfBirth', model = Authors)
+    let filter = {}
+    if (req.params.authorId) filter = { author: req.params.authorId }
+    const features = new ApiFeatures(Book.find(filter), req.query)
+
+    const books = await features.filter().sort().limitFields().paginate().query
+    //const books = await Book.find().populate('author', select = '-books -dateOfBirth', model = Authors)
 
     if (!books) {
         return next(new AppError('Not Found', 404))
@@ -20,6 +26,7 @@ exports.getBooks = catchAsync(async (req, res, next) => {
 })
 
 exports.getBook = catchAsync(async (req, res, next) => {
+
     const book = await Book.findById(req.params.id).populate('author', select = '-books -dateOfBirth')
 
     if (!book) {
