@@ -7,6 +7,7 @@ const app = express()
 
 // JSON body Parser
 app.use(express.json())
+app.use(express.static)
 
 
 
