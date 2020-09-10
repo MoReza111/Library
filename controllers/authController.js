@@ -1,5 +1,6 @@
 const User = require('./../models/userModel')
 const catchAsync = require('./../Utils/catchAsync')
+const AppError = require('./../Utils/appError')
 const jwt = require('jsonwebtoken')
 
 const signToken = id => {
@@ -34,5 +35,22 @@ exports.signUp = catchAsync(async (req, res, next) => {
         name: req.body.name
     })
 
-    createSendToken(newUser, 201, req, res);
+    createSendToken(newUser, 201, req, res)
+})
+
+exports.login = catchAsync(async (req, res, next) => {
+    const { userName, password } = req.body
+
+    if (!userName || !password) {
+        return next(new AppError('Please provide username and password', 400))
+    }
+
+    const user = await User.findOne({ userName }).select('+password')
+
+    if (!user || !(await user.correctPassword(password, user.password))) {
+        return next(new AppError("Incorrect Credentials", 401))
+    }
+
+    createSendToken(user, 200, req, res)
+
 })

@@ -74,8 +74,8 @@ userSchema.pre('/find/', function (next) {
     next()
 })
 
-userSchema.methods.checkPassword = async function (candidatePassword, userPassword) {
-    return await bcrypt.compare(userPassword, candidatePassword)
+userSchema.methods.correctPassword = async function (inputPassword, userPassword) {
+    return await bcrypt.compare(inputPassword, userPassword)
 }
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
