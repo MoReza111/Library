@@ -1,6 +1,7 @@
 const express = require('express')
 const booksRouter = require('./routes/booksRoutes')
-const authorsRouter = require('./routes/authorsRoutes.js')
+const authorsRouter = require('./routes/authorsRoutes')
+const userRoutes = require('./routes/userRoutes')
 const errorController = require('./controllers/errorController')
 
 const app = express()
@@ -15,7 +16,7 @@ app.use(function (req, res, next) {
 
 app.use('/api/v1/books', booksRouter)
 app.use('/api/v1/authors', authorsRouter)
-
+app.use('/api/v1/users', userRoutes)
 
 app.use(errorController)
 module.exports = app

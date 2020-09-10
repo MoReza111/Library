@@ -8,17 +8,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: [true, 'Please Enter an unique username'],
         required: [true, 'Please provide an username'],
-        lowercase: ture
+        lowercase: true
     },
     email: {
         type: String,
         validate: [validator.isEmail, 'Please provide a valid email'],
-        lowercase: ture,
+        lowercase: true,
         required: [true, 'Please provide your Email address']
     },
     name: {
         type: String,
-        required: [true, 'Please provide your Email address']
+        required: [true, 'Please provide your Name']
     },
     photo: {
         type: String,
@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin', 'supporting'],
         default: 'user'
+    },
+    joinedAt: {
+        type: Date,
+        default: Date.now()
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
