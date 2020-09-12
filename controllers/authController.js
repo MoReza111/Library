@@ -57,12 +57,16 @@ exports.login = catchAsync(async (req, res, next) => {
 })
 
 exports.authorize = catchAsync(async (req, res, next) => {
-    console.log(req.headers)
+
     if (!req.headers.authorization) {
-        return next(new AppError(`Please Login`, 401))
+        return next(new AppError('You are not logged in! Please log in to get access.', 401))
     }
 
     const token = req.headers.authorization.split(' ')[1]
+
+    if (!token) {
+        return next(new AppError('You are not logged in! Please log in to get access.', 401))
+    }
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
@@ -79,3 +83,13 @@ exports.authorize = catchAsync(async (req, res, next) => {
     req.user = user
     next()
 })
+
+exports.authorizeByRole = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return next(new AppError('You do not have permission to perform this action', 403))
+        }
+
+        next()
+    }
+}
