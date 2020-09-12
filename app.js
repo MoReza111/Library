@@ -3,6 +3,7 @@ const booksRouter = require('./routes/booksRoutes')
 const authorsRouter = require('./routes/authorsRoutes')
 const userRoutes = require('./routes/userRoutes')
 const errorController = require('./controllers/errorController')
+const AppError = require('./Utils/appError')
 
 const app = express()
 
@@ -17,6 +18,9 @@ app.use(function (req, res, next) {
 app.use('/api/v1/books', booksRouter)
 app.use('/api/v1/authors', authorsRouter)
 app.use('/api/v1/users', userRoutes)
+app.all('*', (req, res, next) => {
+    next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404))
+})
 
 app.use(errorController)
 module.exports = app
