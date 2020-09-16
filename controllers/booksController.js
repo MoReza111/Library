@@ -78,6 +78,25 @@ exports.deleteBook = catchAsync(async (req, res, next) => {
         data: null
     })
 })
+
+exports.getGenres = catchAsync(async (req, res, next) => {
+    const books = await Book.aggregate([
+        { $unwind: '$genres' },
+        {
+            $group: {
+                _id: { genres: "$genres" },
+                count: { $sum: 1 }
+            }
+        }
+    ])
+
+    res.status(200).json({
+        status: 'success',
+        data: books
+    })
+})
+
+
 exports.setIDs = (req, res, next) => {
     // Allow nested routes
     if (!req.body.tour) req.body.author = req.params.authorId;
